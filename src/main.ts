@@ -50,6 +50,6 @@ async function bootstrap() {
   const authService = app.get(AuthService);
   app.useGlobalGuards(new AuthGuard(reflector, authService)) */;
   
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
