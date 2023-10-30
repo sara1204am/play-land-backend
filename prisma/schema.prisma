@@ -1,0 +1,117 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex", "views"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model access_token {
+  id        String    @id @default(uuid())
+  expiresAt DateTime  @map("expires_at") @db.DateTime(0)
+  userId    String?   @db.VarChar(50)
+  token     String    @unique @db.VarChar(255)
+  createdAt DateTime? @default(now()) @map("created_at") @db.DateTime(0)
+}
+
+model user {
+  id                                           String                         @id @default(uuid()) @db.VarChar(50)
+  createdAt                                    DateTime?                      @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt                                    DateTime?                      @map("updated_at") @db.DateTime(0)
+  firstName                                    String?                        @map("first_name") @db.VarChar(100)
+  lastName                                     String?                        @map("last_name") @db.VarChar(100)
+  gender                                       Int?
+  country                                      String?                        @db.VarChar(150)
+  city                                         String?                        @db.VarChar(150)
+  address                                      String?                        @db.LongText
+  phone                                        Json?
+  birthDate                                    DateTime?                      @map("birth_date") @db.DateTime(0)
+  username                                     String?                        @unique(map: "username") @db.VarChar(100)
+  password                                     String?                        @db.VarChar(100)
+  email                                        String?                        @unique(map: "email") @db.VarChar(100)
+}
+
+model user_login_log {
+  id          String    @id @db.VarChar(50) @default(uuid())
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  loggedOutAt DateTime? @map("logged_out_at") @db.Timestamp(6)
+  userId      String    @map("user_id") @db.VarChar(50)
+  ip          String?   @db.VarChar(50)
+  token       String?   @db.VarChar(255)
+  hostInfo    String?   @map("host_info") @db.VarChar(255)
+  platform    String?   @db.VarChar(100)
+
+}
+
+
+model user_token_config {
+  id                       String    @id @db.VarChar(50)
+  created_at               DateTime? @default(now()) @db.Timestamp(6)
+  userId                   String?   @map("user_id") @db.VarChar(50)
+  matrix                   String?
+  type                     Int?      @db.SmallInt
+  key                      String?   @db.VarChar(100)
+  external_two_factor_auth String?
+}
+
+
+model lote {
+  id                String      @id 
+  fecha             DateTime?   
+  nombre            String?     
+  costo             Int?        
+  total_pagado      String?     
+  adelantos         String?     
+  costo_transporte  String?     
+  medio_transporte  String?     
+  proveedor_nombre  String?     
+  proveedor_celular String?     
+  proveedor_ciudad  String?    
+  articulo          articulo[]
+
+  @@map("lotes")
+}
+
+
+model articulo {
+  id             String     @id 
+  nombre         String?    
+  nombre_corto   String?    
+  descripcion    String?    
+  cantidad       Int?      
+  costo_unitario Int?      
+  precio_minimo  Int?      
+  precio_maximo  Int?  
+  active         Boolean?     
+  id_lote        String?   
+  lote           lote?      @relation(fields: [id_lote], references: [id])
+  venta          venta[]
+  imagen         imagen[]
+
+  @@map("articulos")
+}
+
+
+model venta {
+  id          String    @id
+  fecha       DateTime? 
+  precio      Int?      
+  nota        String?   
+  id_articulo String?   
+  articulo    articulo?  @relation(fields: [id_articulo], references: [id])
+
+    @@map("ventas")
+}
+
+model imagen {
+  id          String    @id 
+  nombre      String?   
+  id_articulo String?   
+  articulo    articulo? @relation(fields: [id_articulo], references: [id])
+
+}
+
+
