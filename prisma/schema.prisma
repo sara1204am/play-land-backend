@@ -1,11 +1,12 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch", "fullTextIndex", "views"]
+  binaryTargets = ["native", "debian-openssl-1.1.x"]
 }
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL"),
+  url      = env("DATABASE_URL")
   connection_limit = 5
 }
 
