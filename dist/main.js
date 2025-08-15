@@ -15,6 +15,8 @@ async function bootstrap() {
     });
     app.setGlobalPrefix(process.env.API_ROOT || 'api', prefixOptions);
     ;
+    console.log( app.listen(process.env.PORT , '-----------------------------------');
+    
     await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
