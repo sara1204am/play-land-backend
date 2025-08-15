@@ -1,4 +1,4 @@
-import { articulo } from "@prisma/client";
+import { articulo, Prisma } from "@prisma/client";
 export declare class Articulo implements articulo {
     id: string;
     nombre: string;
@@ -6,8 +6,9 @@ export declare class Articulo implements articulo {
     descripcion: string;
     cantidad: number;
     costo_unitario: number;
-    precio_minimo: number;
-    precio_maximo: number;
+    precio: number;
     active: boolean;
+    stock_by_option: Prisma.JsonValue;
+    type: string;
     id_lote: string;
 }

@@ -17,6 +17,8 @@ const imagenes_module_1 = require("./modules/imagenes/imagenes.module");
 const venta_module_1 = require("./modules/venta/venta.module");
 const articulo_module_1 = require("./modules/articulo/articulo.module");
 const lote_module_1 = require("./modules/lote/lote.module");
+const login_module_1 = require("./modules/login/login.module");
+const uploads_module_1 = require("./services/uploads/uploads.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -31,7 +33,9 @@ exports.AppModule = AppModule = __decorate([
             articulo_module_1.ArticuloModule,
             venta_module_1.VentaModule,
             lote_module_1.LoteModule,
-            imagenes_module_1.ImagenesModule
+            imagenes_module_1.ImagenesModule,
+            login_module_1.LoginModule,
+            uploads_module_1.UploadsModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService, prisma_service_1.PrismaService],

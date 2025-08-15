@@ -1,6 +1,6 @@
-import { imagen } from "@prisma/client";
+import { imagenes } from "@prisma/client";
 
-export class Imagenes implements imagen {
+export class Imagenes implements imagenes {
     id: string;
     nombre: string;
     id_articulo: string;

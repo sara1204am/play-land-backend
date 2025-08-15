@@ -1,8 +1,8 @@
-import { venta } from "@prisma/client";
+import { Prisma, venta } from "@prisma/client";
 export declare class Venta implements venta {
     id: string;
     fecha: Date;
-    precio: number;
+    total: number;
     nota: string;
-    id_articulo: string;
+    detail: Prisma.JsonValue;
 }
