@@ -10,6 +10,8 @@ import { ImagenesModule } from './modules/imagenes/imagenes.module';
 import { VentaModule } from './modules/venta/venta.module';
 import { ArticuloModule } from './modules/articulo/articulo.module';
 import { LoteModule } from './modules/lote/lote.module';
+import { LoginModule } from './modules/login/login.module';
+import { UploadsModule } from './services/uploads/uploads.module';
 
 @Module({
   imports: [
@@ -21,7 +23,9 @@ import { LoteModule } from './modules/lote/lote.module';
     ArticuloModule,
     VentaModule,
     LoteModule,
-    ImagenesModule
+    ImagenesModule,
+    LoginModule,
+    UploadsModule
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

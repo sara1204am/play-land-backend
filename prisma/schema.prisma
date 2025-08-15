@@ -18,21 +18,21 @@ model access_token {
 }
 
 model user {
-  id                                           String                         @id @default(uuid()) @db.VarChar(50)
-  createdAt                                    DateTime?                      @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt                                    DateTime?                      @map("updated_at") @db.DateTime(0)
-  firstName                                    String?                        @map("first_name") @db.VarChar(100)
-  lastName                                     String?                        @map("last_name") @db.VarChar(100)
-  gender                                       Int?
-  country                                      String?                        @db.VarChar(150)
-  city                                         String?                        @db.VarChar(150)
-  address                                      String?                        @db.LongText
-  phone                                        Json?
-  birthDate                                    DateTime?                      @map("birth_date") @db.DateTime(0)
-  username                                     String?                        @unique(map: "username") @db.VarChar(100)
-  password                                     String?                        @db.VarChar(100)
-  email                                        String?                        @unique(map: "email") @db.VarChar(100)
+  id                  String    @id @default(uuid()) @db.VarChar(50)
+  createdAt           DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt           DateTime? @map("updated_at") @db.DateTime(0)
+  firstName           String?   @map("first_name") @db.VarChar(100)
+  lastName            String?   @map("last_name") @db.VarChar(100)
+  username            String?   @db.VarChar(100)
+  password            String?   @db.VarChar(100)
+  email               String?   @unique(map: "email") @db.VarChar(100)
+  emailVerified       Boolean?  @map("email_verified")
+  verificationToken   String?   @map("verification_token") @db.VarChar(100)
+  status              Boolean?  @db.TinyInt()
+
+  @@map("user")
 }
+
 
 model user_login_log {
   id          String    @id @db.VarChar(50) @default(uuid())
@@ -70,44 +70,41 @@ model lote {
   proveedor_nombre  String?     
   proveedor_celular String?     
   proveedor_ciudad  String?    
-  articulo          articulo[]
 
   @@map("lotes")
 }
 
 
 model articulo {
-  id             String     @id 
-  nombre         String?    
-  nombre_corto   String?    
-  descripcion    String?    
-  cantidad       Int?      
-  costo_unitario Int?      
-  precio_minimo  Int?      
-  precio_maximo  Int?  
-  active         Boolean?     
-  id_lote        String?   
-  lote           lote?      @relation(fields: [id_lote], references: [id])
-  venta          venta[]
-  imagen         imagen[]
+  id                  String     @id @default(uuid()) 
+  nombre              String?    
+  nombre_corto        String?    
+  descripcion         String?    
+  cantidad            Int?      
+  costo_unitario      Int?      
+  precio              Int?       
+  active              Boolean?     
+  stock_by_option     Json?
+  type                String?
+  id_lote             String?     
+  imagenes            imagenes[]
 
   @@map("articulos")
 }
 
 
 model venta {
-  id          String    @id
+  id          String      @id @default(uuid()) 
   fecha       DateTime? 
-  precio      Int?      
+  total       Float?      
   nota        String?   
-  id_articulo String?   
-  articulo    articulo?  @relation(fields: [id_articulo], references: [id])
+  detail      Json?
 
-    @@map("ventas")
+  @@map("ventas")
 }
 
-model imagen {
-  id          String    @id 
+model imagenes {
+  id          String    @id @default(uuid()) 
   nombre      String?   
   id_articulo String?   
   articulo    articulo? @relation(fields: [id_articulo], references: [id])

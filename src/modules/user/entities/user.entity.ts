@@ -6,15 +6,10 @@ export class User implements user {
     updatedAt: Date;
     firstName: string;
     lastName: string;
-    gender: number;
-    country: string;
-    city: string;
-    address: string;
-    phone: Prisma.JsonValue;
-    birthDate: Date;
     username: string;
     password: string;
     email: string;
-
-  
+    emailVerified: boolean;
+    verificationToken: string;
+    status: boolean;
 } 
