@@ -12,5 +12,6 @@ export class Articulo implements articulo {
     stock_by_option: Prisma.JsonValue;
     type: string;
     id_lote: string;
+    descuento: number;
 
 }

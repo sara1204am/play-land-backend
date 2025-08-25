@@ -87,6 +87,7 @@ model articulo {
   active              Boolean?     
   stock_by_option     Json?
   type                String?
+  descuento           Int?  
   id_lote             String?     
   imagenes            imagenes[]
 
