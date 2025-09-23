@@ -12,6 +12,7 @@ import { ArticuloModule } from './modules/articulo/articulo.module';
 import { LoteModule } from './modules/lote/lote.module';
 import { LoginModule } from './modules/login/login.module';
 import { UploadsModule } from './services/uploads/uploads.module';
+import { UploadCloudinaryModule } from './modules/upload-cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { UploadsModule } from './services/uploads/uploads.module';
     LoteModule,
     ImagenesModule,
     LoginModule,
-    UploadsModule
+    UploadsModule,
+    UploadCloudinaryModule
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

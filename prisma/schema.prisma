@@ -102,6 +102,7 @@ model venta {
   total       Float?      
   nota        String?   
   detail      Json?
+  detail_generico  Json?
 
   @@map("ventas")
 }
@@ -109,7 +110,8 @@ model venta {
 model imagenes {
   id          String    @id @default(uuid()) 
   nombre      String?   
-  id_articulo String?   
+  id_articulo String?
+  url         String?
   articulo    articulo? @relation(fields: [id_articulo], references: [id])
 
 }
