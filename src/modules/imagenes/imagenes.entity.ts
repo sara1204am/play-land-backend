@@ -4,5 +4,6 @@ export class Imagenes implements imagenes {
     id: string;
     nombre: string;
     id_articulo: string;
+    url: string;
 
 }

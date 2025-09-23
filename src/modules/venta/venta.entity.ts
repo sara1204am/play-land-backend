@@ -6,4 +6,6 @@ export class Venta implements venta {
     total: number;
     nota: string;
     detail: Prisma.JsonValue;
+    detail_generico: Prisma.JsonValue;
+
 }
