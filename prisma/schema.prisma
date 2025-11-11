@@ -84,8 +84,10 @@ model articulo {
   cantidad            Int?      
   costo_unitario      Int?      
   precio              Int?       
+  precio_maximo       Int?       
   active              Boolean?     
   stock_by_option     Json?
+  chips     Json?
   type                String?
   descuento           Int?  
   id_lote             String?   
