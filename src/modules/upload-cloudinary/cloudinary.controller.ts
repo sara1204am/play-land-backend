@@ -1,11 +1,11 @@
-import { Controller, Post, UploadedFile, UseInterceptors, Delete, Param } from '@nestjs/common';
+import { Controller, Post, UploadedFile, UseInterceptors, Delete, Param, Get } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as multer from 'multer';
 import { CloudinaryService } from './cloudinary.service';
 
 @Controller('upload-cloudinary')
 export class CloudinaryController {
-  constructor(private readonly uploadService: CloudinaryService) {}
+  constructor(private readonly uploadService: CloudinaryService) { }
 
   @Post()
   @UseInterceptors(FileInterceptor('file', {
@@ -24,5 +24,10 @@ export class CloudinaryController {
   @Delete(':publicId')
   async delete(@Param('publicId') publicId: string) {
     return this.uploadService.deleteImage(publicId);
+  }
+
+  @Get('all')
+  async getAllImages() {
+    return this.uploadService.listAllImages();
   }
 }
