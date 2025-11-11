@@ -8,8 +8,10 @@ export class Articulo implements articulo {
     cantidad: number;
     costo_unitario: number;
     precio: number;
+    precio_maximo: number;
     active: boolean;
     stock_by_option: Prisma.JsonValue;
+    chips: Prisma.JsonValue;
     type: string;
     descuento: number;
     id_lote: string;
