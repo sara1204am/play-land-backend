@@ -114,6 +114,7 @@ model imagenes {
   nombre      String?   
   id_articulo String?
   url         String?
+  url_2       String?
   articulo    articulo? @relation(fields: [id_articulo], references: [id])
 
 }
