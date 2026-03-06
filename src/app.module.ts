@@ -13,6 +13,7 @@ import { LoteModule } from './modules/lote/lote.module';
 import { LoginModule } from './modules/login/login.module';
 import { UploadsModule } from './services/uploads/uploads.module';
 import { UploadCloudinaryModule } from './modules/upload-cloudinary/cloudinary.module';
+import { UploadS3Module } from './modules/upload-s3/upload-s3.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { UploadCloudinaryModule } from './modules/upload-cloudinary/cloudinary.m
     ImagenesModule,
     LoginModule,
     UploadsModule,
-    UploadCloudinaryModule
+    UploadCloudinaryModule,
+    UploadS3Module
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
