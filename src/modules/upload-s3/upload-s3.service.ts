@@ -8,6 +8,7 @@ export class S3Service {
     private s3: S3Client;
     private bucket = 'play-land-images'; // tu bucket
 
+    
     constructor() {
         this.s3 = new S3Client({
             region: process.env.AWS_REGION,
