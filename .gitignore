@@ -1,6 +1,14 @@
 # compiled output
 /node_modules
+/dist
 /documents
+/storage
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
 # Logs
 logs
 *.log
@@ -32,3 +40,6 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Prisma
+/prisma/client
