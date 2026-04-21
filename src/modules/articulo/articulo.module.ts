@@ -5,6 +5,6 @@ import { DatabaseService } from 'src/core-services/prisma/data-base/data-base.se
 
 @Module({
   controllers: [ArticuloController],
-  providers: [ArticuloService, DatabaseService]
+  providers: [ArticuloService]
 })
 export class ArticuloModule {}

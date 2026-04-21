@@ -49,7 +49,7 @@ async function bootstrap() {
   const reflector = app.get(Reflector);
   const authService = app.get(AuthService);
   app.useGlobalGuards(new AuthGuard(reflector, authService)) */;
-  
+  app.enableShutdownHooks();
   
   await app.listen(process.env.PORT || 3000);
 }

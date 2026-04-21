@@ -5,6 +5,6 @@ import { DatabaseService } from 'src/core-services/prisma/data-base/data-base.se
 
 @Module({
   controllers: [VentaController],
-  providers: [VentaService, DatabaseService]
+  providers: [VentaService]
 })
 export class VentaModule {}

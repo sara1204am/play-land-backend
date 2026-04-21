@@ -14,6 +14,6 @@ import { DatabaseService } from 'src/core-services/prisma/data-base/data-base.se
 @Module({
   imports: [AuthModule, HttpModule],
   controllers: [LoginController, LogoutController],
-  providers: [LoginService, DatabaseService, ConfigService],
+  providers: [LoginService, ConfigService],
 })
 export class LoginModule {}

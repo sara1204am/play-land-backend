@@ -5,7 +5,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config/dist/config.module';
 import { configuration } from './config/configuration.config';
 
-import { PrismaService } from './core-services/prisma/prisma/prisma.service';
+import { PrismaModule } from './core-services/prisma/prisma.module';
 import { ImagenesModule } from './modules/imagenes/imagenes.module';
 import { VentaModule } from './modules/venta/venta.module';
 import { ArticuloModule } from './modules/articulo/articulo.module';
@@ -22,6 +22,7 @@ import { UploadS3Module } from './modules/upload-s3/upload-s3.module';
       load: [configuration],
       isGlobal: true,
     }),
+    PrismaModule,
     ArticuloModule,
     VentaModule,
     LoteModule,
@@ -32,6 +33,6 @@ import { UploadS3Module } from './modules/upload-s3/upload-s3.module';
     UploadS3Module
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService],
 })
 export class AppModule {}

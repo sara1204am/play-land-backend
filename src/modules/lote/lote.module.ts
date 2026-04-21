@@ -5,6 +5,6 @@ import { DatabaseService } from 'src/core-services/prisma/data-base/data-base.se
 
 @Module({
   controllers: [LoteController],
-  providers: [LoteService, DatabaseService]
+  providers: [LoteService]
 })
 export class LoteModule {}
