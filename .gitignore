@@ -5,9 +5,7 @@
 /storage
 
 # Environment variables
-.env
-.env.*
-!.env.example
+
 
 # Logs
 logs
@@ -42,4 +40,5 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # Prisma
-/prisma/client.env
+/prisma/client
+.env
