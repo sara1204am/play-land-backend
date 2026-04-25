@@ -51,6 +51,6 @@ async function bootstrap() {
   app.useGlobalGuards(new AuthGuard(reflector, authService)) */;
   app.enableShutdownHooks();
   
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(process.env.PORT || 3500);
 }
 bootstrap();

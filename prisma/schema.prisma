@@ -93,6 +93,8 @@ model articulo {
   id_lote             String?   
   created_at          DateTime? @default(now()) @db.Timestamp(6)  
   imagenes            imagenes[]
+  stock_fisico            stock_fisico[]
+  conteos_fisicos_detalle conteo_fisico_detalle[]
 
   @@map("articulos")
 }
@@ -120,3 +122,67 @@ model imagenes {
 }
 
 
+
+model ubicacion {
+  id          String    @id @default(uuid())
+  nombre      String    @db.VarChar(100)
+  descripcion String?   @db.VarChar(255)
+  activo      Boolean?  @default(true)
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt   DateTime? @map("updated_at") @db.DateTime(0)
+
+  stock_fisico            stock_fisico[]
+  conteos_fisicos_detalle conteo_fisico_detalle[]
+
+  @@map("ubicaciones")
+}
+
+model stock_fisico {
+  id          String    @id @default(uuid())
+  articuloId  String    @map("articulo_id")
+  variante    String?   @db.VarChar(150)
+  ubicacionId String    @map("ubicacion_id")
+  cantidad    Int       @default(0)
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt   DateTime? @map("updated_at") @db.DateTime(0)
+  createdById String?   @map("created_by")
+  updatedById String?   @map("updated_by")
+
+  articulo  articulo  @relation(fields: [articuloId], references: [id])
+  ubicacion ubicacion @relation(fields: [ubicacionId], references: [id])
+
+  @@unique([articuloId, variante, ubicacionId], name: "articulo_variante_ubicacion")
+  @@map("stock_fisico")
+}
+
+model conteo_fisico {
+  id          String    @id @default(uuid())
+  nombre      String?   @db.VarChar(150)
+  fecha       DateTime? @default(now())
+  observacion String?   @db.VarChar(255)
+  createdById String?   @map("created_by")
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+
+  detalles conteo_fisico_detalle[]
+
+  @@map("conteos_fisicos")
+}
+
+model conteo_fisico_detalle {
+  id              String    @id @default(uuid())
+  conteoId        String    @map("conteo_id")
+  articuloId      String    @map("articulo_id")
+  variante        String?   @db.VarChar(150)
+  ubicacionId     String    @map("ubicacion_id")
+  cantidadSistema Int?      @default(0) @map("cantidad_sistema")
+  cantidadContada Int?      @default(0) @map("cantidad_contada")
+  diferencia      Int?      @default(0)
+  contadoById     String?   @map("contado_by")
+  createdAt       DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+
+  conteo    conteo_fisico @relation(fields: [conteoId], references: [id])
+  articulo  articulo      @relation(fields: [articuloId], references: [id])
+  ubicacion ubicacion     @relation(fields: [ubicacionId], references: [id])
+
+  @@map("conteos_fisicos_detalle")
+}

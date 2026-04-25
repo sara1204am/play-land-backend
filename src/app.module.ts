@@ -14,6 +14,10 @@ import { LoginModule } from './modules/login/login.module';
 import { UploadsModule } from './services/uploads/uploads.module';
 import { UploadCloudinaryModule } from './modules/upload-cloudinary/cloudinary.module';
 import { UploadS3Module } from './modules/upload-s3/upload-s3.module';
+import { UbicacionModule } from './modules/ubicacion/ubicacion.module';
+import { StockFisicoModule } from './modules/stock-fisico/stock-fisico.module';
+import { ConteoFisicoModule } from './modules/conteo-fisico/conteo-fisico.module';
+import { ConteoFisicoDetalleModule } from './modules/conteo-fisico-detalle/conteo-fisico-detalle.module';
 
 @Module({
   imports: [
@@ -30,7 +34,11 @@ import { UploadS3Module } from './modules/upload-s3/upload-s3.module';
     LoginModule,
     UploadsModule,
     UploadCloudinaryModule,
-    UploadS3Module
+    UploadS3Module,
+    UbicacionModule,
+    StockFisicoModule,
+    ConteoFisicoModule,
+    ConteoFisicoDetalleModule
   ],
   controllers: [AppController],
   providers: [AppService],

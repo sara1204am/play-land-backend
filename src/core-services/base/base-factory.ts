@@ -157,6 +157,28 @@ export function abstractControllerFactory<T>(
       return await this._service.deleteById(id, accessToken);
     }
 
+    @Delete()
+    @ApiOperation({
+      summary: `Delete all ${modelName} records matched by filter`,
+    })
+    @ApiQuery({
+      name: 'filter',
+      required: true,
+      type: String,
+      description: `Filter defining fields, where, select, etc. must be a JSON-encoded string see <a href="https://www.prisma.io/docs/concepts/components/prisma-client/filtering-and-sorting">Prisma Filter</a> for more details`,
+      example: '({"where": {"something": "value"}})',
+    })
+    public async deleteAll(
+      @Query('filter') filter: string,
+      @Res({ passthrough: true }) response: ResponseExp,
+      @AccessTokenData() accessToken?: AccessToken,
+    ): Promise<any> {
+      return await this._service.deleteWithWehere(
+        StringFunctions.parseJsonSafe(filter),
+        accessToken,
+      );
+    }
+
     @Post()
     @ApiOperation({
       summary: `Create new ${modelName} record`,
@@ -452,6 +474,9 @@ export function abstractControllerFactory<T>(
       };
 
       targetModel.fields.forEach((v) => {
+        if (v.isId && data[v.name] === null) {
+          data[v.name] = undefined;
+        }
         if (
           v.type === 'Json' &&
           !(isArray(data[v.name]) || ValidationFunctions.isLiteralObject(data[v.name]))

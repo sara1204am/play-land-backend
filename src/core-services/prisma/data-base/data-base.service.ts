@@ -230,6 +230,9 @@ export class DatabaseService extends PrismaService {
       internalCall,
     ); */
     if (validationAcl) {
+      if (data && typeof data === 'object' && (data as any).id === null) {
+        delete (data as any).id;
+      }
       return this[interalModel].create({ data: data });
     }
     return new ForbiddenException('No permission');
@@ -263,7 +266,13 @@ export class DatabaseService extends PrismaService {
       internalCall,
     ); */
     if (validationAcl) {
-      return this[interalModel].createMany({ data: body });
+      const cleanBody = body.map((item) => {
+        if (item && typeof item === 'object' && (item as any).id === null) {
+          delete (item as any).id;
+        }
+        return item;
+      });
+      return this[interalModel].createMany({ data: cleanBody });
     }
     return new ForbiddenException('No permission');
   }
@@ -298,6 +307,9 @@ export class DatabaseService extends PrismaService {
       internalCall,
     ); */
     if (validationAcl) {
+      if (body && typeof body === 'object') {
+        delete (body as any).id;
+      }
       return this[interalModel].update({
         where: { id },
         data: body,
@@ -334,6 +346,9 @@ export class DatabaseService extends PrismaService {
       internalCall,
     ); */
     if (validationAcl) {
+      if (body && typeof body === 'object' && (body as any).id === null) {
+        delete (body as any).id;
+      }
       return this[interalModel].upsert({
         where: {
           id: get(body, 'id') ? get(body, 'id') : '',
