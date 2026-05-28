@@ -3,11 +3,41 @@ import { BaseService } from 'src/core-services/base/base.service';
 import { Articulo } from './articulo.entity';
 import { DatabaseService } from 'src/core-services/prisma/data-base/data-base.service';
 import { Prisma } from '@prisma/client';
+import { AccessToken } from 'src/modules/login/interfaces';
 
 @Injectable()
 export class ArticuloService extends BaseService<Articulo> {
   constructor(private readonly _databaseService: DatabaseService) {
     super(_databaseService, 'articulo');
+  }
+
+  override async deleteById(
+    id: string | number,
+    accessToken?: AccessToken,
+    internalCall = false,
+  ): Promise<Articulo> {
+    const stringId = String(id);
+    return await this._databaseService.$transaction(async (tx) => {
+      // 1. Delete associated images
+      await tx.imagenes.deleteMany({
+        where: { id_articulo: stringId },
+      });
+
+      // 2. Delete associated physical stock
+      await tx.stock_fisico.deleteMany({
+        where: { articuloId: stringId },
+      });
+
+      // 3. Delete associated physical count details
+      await tx.conteo_fisico_detalle.deleteMany({
+        where: { articuloId: stringId },
+      });
+
+      // 4. Delete the article itself
+      return await tx.articulo.delete({
+        where: { id: stringId },
+      });
+    });
   }
   normalizeText(s: string) {
     return (s ?? '')
@@ -17,11 +47,12 @@ export class ArticuloService extends BaseService<Articulo> {
       .replace(/[\u0300-\u036f]/g, '')
   }
 
-  async search(search: string) {
+  async search(search: string, includeInactive = false) {
     const q = this.normalizeText(search);
     if (!q) return [];
 
-    const like = `%${q}%`;
+    const words = q.split(/\s+/).filter((w) => w.length > 0);
+    if (words.length === 0) return [];
 
     // Normalizador SQL: reemplaza variantes comunes a ASCII + lower
     const normSql = (expr: any) => Prisma.sql`
@@ -44,6 +75,27 @@ export class ArticuloService extends BaseService<Articulo> {
 
     const N = (expr: any) => normSql2(normSql(expr));
 
+    // Dynamic AND clauses for each search token
+    const wordClauses = words.map((word) => {
+      const likeExpr = `%${word}%`;
+      return Prisma.sql`
+        (
+          ${N(Prisma.sql`a.nombre`)} LIKE ${likeExpr}
+          OR EXISTS (
+            SELECT 1
+            FROM JSON_TABLE(
+              COALESCE(a.chips, JSON_ARRAY()),
+              '$[*]' COLUMNS (chip VARCHAR(255) PATH '$')
+            ) jt
+            WHERE ${N(Prisma.sql`jt.chip`)} LIKE ${likeExpr}
+          )
+        )
+      `;
+    });
+
+    const wordsAndClause = Prisma.join(wordClauses, ' AND ');
+    const activeFilter = includeInactive ? Prisma.empty : Prisma.sql`a.active = 1 AND`;
+
     const result = await this._databaseService.$queryRaw(
       Prisma.sql`
       SELECT
@@ -59,18 +111,7 @@ export class ArticuloService extends BaseService<Articulo> {
         ) AS imagenes
       FROM articulos a
       LEFT JOIN imagenes i ON i.id_articulo = a.id
-      WHERE a.active = 1
-        AND (
-          ${N(Prisma.sql`a.nombre`)} LIKE ${like}
-          OR EXISTS (
-            SELECT 1
-            FROM JSON_TABLE(
-              COALESCE(a.chips, JSON_ARRAY()),
-              '$[*]' COLUMNS (chip VARCHAR(255) PATH '$')
-            ) jt
-            WHERE ${N(Prisma.sql`jt.chip`)} LIKE ${like}
-          )
-        )
+      WHERE ${activeFilter} (${wordsAndClause})
       GROUP BY a.id
       ORDER BY a.nombre ASC
       LIMIT 50

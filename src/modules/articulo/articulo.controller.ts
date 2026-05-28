@@ -22,12 +22,14 @@ export class ArticuloController extends BaseController<Articulo> {
   @Get('search')
   @ApiOperation({ summary: 'Buscar articulos por palabra' })
   @ApiQuery({ name: 'q', required: true, description: 'Texto a buscar' })
-  async search(@Query('q') q: string) {
+  @ApiQuery({ name: 'all', required: false, description: 'Buscar todos incluyendo inactivos' })
+  async search(@Query('q') q: string, @Query('all') all?: string) {
     const search = (q ?? '').trim();
 
     if (!search) return [];
 
-    return this.articuloService.search(search);;
+    const includeInactive = all === 'true' || all === '1';
+    return this.articuloService.search(search, includeInactive);
   }
 }
 
